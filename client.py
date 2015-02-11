@@ -23,7 +23,8 @@ def client(msg):
             complete = True
         response = "{}{}".format(response, line)
     client_socket.close()
+    return response
 
 
 if __name__ == '__main__':
-    client(message)
+    print client(message)
