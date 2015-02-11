@@ -1,7 +1,7 @@
 import socket
 
 
-def open_conn():
+def server():
     server_socket = socket.socket(
         socket.AF_INET,
         socket.SOCK_STREAM,
@@ -30,4 +30,4 @@ def open_conn():
 
 
 if __name__ == '__main__':
-    open_conn()
+    server()
