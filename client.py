@@ -2,11 +2,9 @@ import sys
 import socket
 
 
-space = " "
-message = space.join(sys.argv[1:])
-
-
-def client(msg):
+def client(message):
+    if not isinstance(message, str):
+        message = str(message)
     client_socket = socket.socket(
         socket.AF_INET,
         socket.SOCK_STREAM,
@@ -27,4 +25,6 @@ def client(msg):
 
 
 if __name__ == '__main__':
+    space = " "
+    message = space.join(sys.argv[1:])
     print client(message)

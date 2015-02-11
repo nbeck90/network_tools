@@ -13,9 +13,16 @@ def server():
         while True:
             conn, addr = server_socket.accept()
             buffsize = 32
-            line = conn.recv(buffsize)
-            conn.sendall("You sent: {}".format(line))
-            print line
+            msg = ""
+            complete = False
+            while not complete:
+                line = conn.recv(buffsize)
+                print line
+                if len(line) < buffsize:
+                    complete = True
+                msg = "{}{}".format(msg, line)
+            conn.sendall("You sent: {}".format(msg))
+            print "You received: {}".format(msg)
             conn.close()
     except KeyboardInterrupt:
         server_socket.close()
