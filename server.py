@@ -17,7 +17,6 @@ def server():
             complete = False
             while not complete:
                 line = conn.recv(buffsize)
-                print line
                 if len(line) < buffsize:
                     complete = True
                 msg = "{}{}".format(msg, line)
