@@ -2,19 +2,11 @@ from client import client
 import pytest
 
 
-def test_string_input():
-    assert client("String") == "You sent: String"
-
-
-def test_int_input():
-    assert client(42) == "You sent: 42"
-
-
-def test_empty_input():
-    with pytest.raises(TypeError):
-        client()
-
-
-def test_over32_input():
-    assert client("A long message that will be over 32 bits but here's a few more")\
-    == "You sent: A long message that will be over 32 bits but here's a few more"
+def test_response_ok():
+    msg = "GET /path/to/myindex.html HTTP/1.1\r\nHost: localhost:50000\r\n"
+    result = "HTTP/1.1 200 OK\r\n"
+    con_type = "Content-Type: text/plain\r\n"
+    body = "Content length: {}".format(21)
+    # Length of message from file name to end of line
+    result = "{}{}{}".format(result, con_type, body)
+    assert client(msg) == result
