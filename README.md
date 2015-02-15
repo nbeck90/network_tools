@@ -7,13 +7,17 @@
                    This server will reprint what the client sent and then will give back 
                    the message to the server telling it what it said.
 
+*Feb 15th, 2015* - Added the HTTP1 portion of the assignment, such that the server requires
+                   a correctly formatted phrase in order to give the right response, and
+                   will send a proper error if it is not written correctly.
+
 
 Collaborations:
 Nick Becker
 
 
 Resources:
-<ul>
-<li>Cris Ewing</li>
-<li>Nick Draper</li>
-<li>Ben Friedland</li>
+1. Cris Ewing
+2. Nick Draper
+3. Ben Friedland
+4. Robert Whaskell
