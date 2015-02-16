@@ -4,7 +4,7 @@ import email.utils
 
 def test_response_not_found():
     msg = "GET /path/to/myindex.html HTTP/1.1\r\nHost: localhost:50000\r\n"
-    result = "HTTP/1.1 404 ERROR\r\n"
+    result = "\nHTTP/1.1 404 ERROR\r\n"
     date = 'Date: {}\r\n'.format(email.utils.formatdate(usegmt=True))
     con_type = "Content-Type: text/plain\r\n"
     body = "ERROR 404, Content Not Found\r\n"
@@ -15,7 +15,7 @@ def test_response_not_found():
 
 def test_response_post():
     msg = "POST /path/to/myindex.html HTTP/1.1\r\nHost: localhost:50000\r\n"
-    result = "HTTP/1.1 405 ERROR\r\n"
+    result = "\nHTTP/1.1 405 ERROR\r\n"
     date = 'Date: {}\r\n'.format(email.utils.formatdate(usegmt=True))
     con_type = "Content-Type: text/plain\r\n"
     body = "ERROR 405, POST METHOD NOT ALLOWED\r\n"
@@ -25,20 +25,10 @@ def test_response_post():
 
 def test_response_not_supported():
     msg = "GET /path/to/myindex.html HTTP/1.0\r\nHost: localhost:50000\r\n"
-    result = "HTTP/1.1 505 ERROR\r\n"
+    result = "\nHTTP/1.1 505 ERROR\r\n"
     date = 'Date: {}\r\n'.format(email.utils.formatdate(usegmt=True))
     con_type = "Content-Type: text/plain\r\n"
     body = "ERROR 505, HTTP/1.0 NOT SUPPORTED\r\n"
-    result = "{}{}{}{}".format(result, date, con_type, body)
-    assert client(msg) == result
-
-
-def test_bad_response():
-    msg = "This"
-    result = "HTTP/1.1 400 ERROR\r\n"
-    date = 'Date: {}\r\n'.format(email.utils.formatdate(usegmt=True))
-    con_type = "Content-Type: text/plain\r\n"
-    body = "ERROR 400, BAD REQUEST\r\n"
     result = "{}{}{}{}".format(result, date, con_type, body)
     assert client(msg) == result
 

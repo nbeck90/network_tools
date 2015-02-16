@@ -44,7 +44,7 @@ def response_ok(msg, resolved):
 
 
 def response_error(error_code, error_msg):
-    error_type = "HTTP/1.1 {} ERROR\r\n".format(error_code)
+    error_type = "\nHTTP/1.1 {} ERROR\r\n".format(error_code)
     timestamp = 'Date: {}\r\n'.format(email.utils.formatdate(usegmt=True))
     con_type = "Content-Type: text/plain\r\n"
     body = "ERROR {}, {}\r\n".format(error_code, error_msg)
