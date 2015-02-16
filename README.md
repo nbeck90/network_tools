@@ -15,6 +15,9 @@
                    requests for specific directories and look inside the files. Will work
                    with all file types and gives proper error if file does not exist.
 
+*Feb 15th, 2015* - Added the HTTP3 portion of the assignment, such that the server can take
+                   multiple requests at the same time a la gevent.
+
 
 Collaborations:
 Nick Becker
@@ -25,3 +28,4 @@ Resources:
 2. Nick Draper
 3. Ben Friedland
 4. Robert Haskell
+http://www.gevent.org/servers.html
