@@ -1,4 +1,8 @@
 import socket
+import os
+import io
+import mimetypes
+import email.utils
 
 
 def server():
@@ -31,18 +35,20 @@ def server():
         server_socket.close()
 
 
-def response_ok(msg):
-    result = "HTTP/1.1 200 OK\r\n"
-    con_type = "Content-Type: text/plain\r\n"
-    body = "Content length: {}".format(len(msg))
-    return "{}{}{}".format(result, con_type, body)
+def response_ok(msg, resolved):
+    result = "\nHTTP/1.1 200 OK\r\n"
+    timestamp = 'Date: {}\r\n'.format(email.utils.formatdate(usegmt=True))
+    con_type = "Content-Type: {}".format(msg)
+    body = "{}".format(resolved)
+    return "{}{}{}{}".format(result, timestamp, con_type, body)
 
 
 def response_error(error_code, error_msg):
     error_type = "HTTP/1.1 {} ERROR\r\n".format(error_code)
+    timestamp = 'Date: {}\r\n'.format(email.utils.formatdate(usegmt=True))
     con_type = "Content-Type: text/plain\r\n"
     body = "ERROR {}, {}\r\n".format(error_code, error_msg)
-    return "{}{}{}".format(error_type, con_type, body)
+    return "{}{}{}{}".format(error_type, timestamp, con_type, body)
 
 
 def parse_request(request):
@@ -51,7 +57,8 @@ def parse_request(request):
         return None
     error_check = check_errors(request_pieces)
     if error_check == 'No Errors':
-        return response_ok(request_pieces[1])
+        resolved = resolve_uri(request_pieces[1])
+        return resolved
     return error_check
 
 
@@ -61,6 +68,35 @@ def check_errors(request):
     if request[2] != 'HTTP/1.1':
         return response_error('505', '{} NOT SUPPORTED'.format(request[2]))
     return 'No Errors'
+
+
+def resolve_uri(uri):
+    if os.path.isfile(uri):
+        file_content = read_file(uri)
+        guess = mimetypes.guess_type(uri)[0]
+        response = response_ok(guess, file_content)
+        return response
+    elif os.path.isdir(os.path.abspath(uri)):
+        files = file_list(uri)
+        response = response_ok('text/html', files)
+        return response
+    else:
+        return response_error('404', 'Content Not Found')
+
+
+def read_file(uri):
+    file_info = io.open(uri, "r")
+    body = file_info.read()
+    file_info.close()
+    return body
+
+
+def file_list(uri):
+    file_list = ""
+    for item in os.listdir(uri):
+        file_list += "<li>{}</li>\n".format(item)
+    body = "\n\n<ul>\n{}</ul>\n".format(file_list)
+    return body
 
 
 if __name__ == '__main__':
